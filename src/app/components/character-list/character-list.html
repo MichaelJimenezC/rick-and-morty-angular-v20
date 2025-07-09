@@ -7,10 +7,13 @@
     <!-- b) Llama al método `onSearchKeyup($event)` en el evento (keyup) -->
     <input 
       placeholder="Buscar personajes..."
+      type="text"
+      [(ngModel)]="searchTerm"
+      (keyup)="onSearchKeyup($event)"
       /> <!-- ¡TU CÓDIGO AQUÍ! -->
     
     <!-- Llama al método `onSearch()` cuando se haga click en este botón -->
-    <button>Buscar</button> <!-- ¡TU CÓDIGO AQUÍ! -->
+    <button (click)="onSearch()">Buscar</button> <!-- ¡TU CÓDIGO AQUÍ! -->
   </div>
 
   <!-- 2. ESTADOS DE CARGA Y ERROR (Control de Flujo con @if) -->
@@ -38,7 +41,16 @@
       <!-- Itera sobre la señal `characters()` usando el nuevo bloque `@for`. -->
       <!-- La sintaxis es: @for (character of characters(); track character.id) { ... } -->
       <!-- ¡TU CÓDIGO AQUÍ! -->
-      
+      @for (character of characters(); track character.id) {
+        <div class="character-card">
+          <img [src]="character.image" [alt]="character.name" class="character-image" />
+          <div class="character-info">
+            <h3>{{ character.name }}</h3>
+            <p>Status: {{ character.status }}</p>
+            <p>Species: {{ character.species }}</p>
+          </div>
+        </div>
+      }
       <!-- EJEMPLO DE LA ESTRUCTURA DE UNA TARJETA (character-card): -->
       <!-- 
       <div class="character-card">

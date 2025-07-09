@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, Character } from '../models/character';
+import { tap } from 'rxjs/operators';
 
 // GUÍA PARA EL ESTUDIANTE:
 @Injectable({
@@ -11,12 +12,13 @@ export class Api {
   // 1. URL BASE DE LA API
   // Define aquí la URL principal para el recurso "character" de la API.
   // Visita https://rickandmortyapi.com/documentation/#get-all-characters.
-  private readonly API_URL = ''; // <- ¡EL ENLACE AQUÍ!
+  private readonly API_URL = 'https://rickandmortyapi.com/api/character'; // <- ¡EL ENLACE AQUÍ!
 
   // 2. INYECCIÓN DE DEPENDENCIAS MODERNA
   // Usa la función `inject()` para obtener una instancia de HttpClient.
   // Esta es la práctica recomendada en Angular desde la v14.
   // ¡TU CÓDIGO AQUÍ!
+  private readonly http = inject(HttpClient);
   // Pista: private readonly http = inject(HttpClient);
 
   // 3. GESTIÓN DE ESTADO CON SEÑALES (SIGNALS)
@@ -38,7 +40,11 @@ export class Api {
     //    actualiza tu señal (`charactersSignal`) con los resultados de la API.
     //    Los personajes están en `response.results`.
     
-    throw new Error('Método no implementado'); // Reemplaza esto con tu código.
+    return this.http.get<ApiResponse>(this.API_URL).pipe(
+      tap(response => {
+        this.charactersSignal.set(response.results); 
+      })
+    );
   }
 
   // 5. MÉTODO PARA BUSCAR PERSONAJES POR NOMBRE
@@ -49,8 +55,16 @@ export class Api {
     // c) Al igual que en `getCharacters`, usa `http.get().pipe(tap(...))`
     //    para hacer la petición y actualizar la señal con los nuevos resultados.
 
-    throw new Error('Método no implementado'); // Reemplaza esto con tu código.
-  }
+    if (!name.trim()) {
+      return this.getCharacters();
+    }
+    const searchUrl = `${this.API_URL}/?name=${encodeURIComponent(name)}`;
+    return this.http.get<ApiResponse>(searchUrl).pipe(
+      tap(response => {
+        this.charactersSignal.set(response.results);
+      })
+    );
+    }
 }
 
 // NOTAS PEDAGÓGICAS RELEVANTES:

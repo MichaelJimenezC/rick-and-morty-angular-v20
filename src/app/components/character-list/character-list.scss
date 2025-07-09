@@ -1,1 +1,76 @@
 // Estilos a tu preferencia (Se recomienda estilos sencillos y claros)
+/* Contenedor del buscador */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    gap: 0.5rem;
+  
+    input {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 250px;
+      font-size: 16px;
+    }
+  
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #43d9be;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #36bca5;
+      }
+    }
+  }
+  
+  /* Cuadrícula de tarjetas */
+  .character-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  /* Tarjeta de personaje */
+  .character-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: transform 0.2s ease-in-out;
+  
+    &:hover {
+      transform: scale(1.02);
+    }
+  
+    .character-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  
+    .character-info {
+      padding: 1rem;
+      text-align: center;
+  
+      h3 {
+        margin: 0.5rem 0;
+        font-size: 1.25rem;
+      }
+  
+      p {
+        margin: 0.25rem 0;
+        font-size: 0.95rem;
+        color: #555;
+      }
+    }
+  }
+  

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Api } from '../../services/api';
 import { Character } from '../../models/character';
+import { finalize } from 'rxjs/operators';
 
 // GUÍA PARA EL ESTUDIANTE:
 @Component({
@@ -52,8 +53,28 @@ export class CharacterListComponent implements OnInit {
     //    así que aquí solo necesitas manejar el estado de carga y los errores.
     //    - `error`: Si hay un error, asígnale un mensaje a `errorMessage`.
     //    - `finalize`: Usa el operador `finalize` dentro de `.pipe()` para poner `loading` a `false`.
-    
+
     // ¡TU CÓDIGO AQUÍ!
+    // a) Activar loading y limpiar errores previos
+    this.loading = true;
+    this.errorMessage = '';
+
+    // b) Llamar al servicio
+    this.api.getCharacters().pipe(
+      // c) finalize: se ejecuta al terminar (éxito o error)
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
+      next: () => {
+        // No es necesario hacer nada aquí porque el servicio actualiza la señal
+      },
+      error: (err) => {
+        // Manejo de error: mostrar mensaje
+        this.errorMessage = 'Ocurrió un error al cargar los personajes.';
+        console.error('Error al obtener personajes:', err);
+      }
+    });
   }
 
   // 5. MÉTODO PARA EJECUTAR UNA BÚSQUEDA
@@ -64,6 +85,25 @@ export class CharacterListComponent implements OnInit {
     // c) Suscríbete para manejar los estados de la UI. La señal se actualiza sola.
 
     // ¡TU CÓDIGO AQUÍ!
+    // a) Preparar la UI
+    this.loading = true;
+    this.errorMessage = '';
+
+    // b) Ejecutar la búsqueda
+    this.api.searchCharacters(this.searchTerm).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe({
+      next: () => {
+        // No necesitas hacer nada aquí; la señal se actualiza desde el servicio
+      },
+      error: (err) => {
+        // Mostrar mensaje si hay error (por ejemplo, 404 Not Found)
+        this.errorMessage = 'No se encontraron personajes con ese nombre.';
+        console.error('Error en la búsqueda:', err);
+      }
+    });
   }
 
   // 6. MÉTODO AUXILIAR PARA EL INPUT

@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    
+    provideHttpClient(withFetch()),
     // ¡TU CÓDIGO AQUÍ! - Agrega provideHttpClient() para habilitar peticiones HTTP
     // NUEVA PRÁCTICA ANGULAR 18+: Usa withFetch() para mejor rendimiento
     // Ejemplo: provideHttpClient(withFetch())
